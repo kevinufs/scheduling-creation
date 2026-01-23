@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Appointments POST Tester</title>
+    <style>
+      :root {
+        --bg: #05070d;
+        --panel: #0c1018;
+        --panel-2: #0f1624;
+        --border: rgba(255, 255, 255, 0.08);
+        --text: #e9edf6;
+        --muted: #9fb1cc;
+        --accent: #6de0ff;
+        --accent-2: #7c7cff;
+        --danger: #ff7b7b;
+        --shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+        background: radial-gradient(110% 130% at 10% 10%, rgba(124, 124, 255, 0.08), transparent),
+          radial-gradient(110% 130% at 90% 0%, rgba(109, 224, 255, 0.12), transparent),
+          var(--bg);
+        color: var(--text);
+        display: flex;
+        justify-content: center;
+      }
+
+      .page {
+        width: min(1100px, 100% - 32px);
+        margin: 32px auto 56px;
+      }
+
+      .hero {
+        margin-bottom: 20px;
+      }
+
+      .eyebrow {
+        letter-spacing: 0.08em;
+        font-size: 11px;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin: 0 0 6px;
+      }
+
+      h1 {
+        margin: 0 0 8px;
+        font-size: 28px;
+        letter-spacing: -0.01em;
+      }
+
+      .lede {
+        margin: 0 0 18px;
+        color: var(--muted);
+        max-width: 760px;
+        line-height: 1.6;
+      }
+
+      .panel {
+        background: linear-gradient(145deg, var(--panel), var(--panel-2));
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 20px;
+        box-shadow: var(--shadow);
+      }
+
+      .panel + .panel {
+        margin-top: 16px;
+      }
+
+      form {
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+
+      .section {
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 14px 14px 10px;
+        background: rgba(255, 255, 255, 0.02);
+      }
+
+      .section-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 12px;
+      }
+
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: rgba(109, 224, 255, 0.12);
+        color: var(--text);
+        font-weight: 600;
+        font-size: 12px;
+        border: 1px solid rgba(109, 224, 255, 0.35);
+      }
+
+      .hint {
+        margin: 0;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 14px;
+      }
+
+      label {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        font-weight: 600;
+        font-size: 13px;
+        color: var(--text);
+      }
+
+      input,
+      textarea {
+        width: 100%;
+        padding: 10px 12px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.04);
+        color: var(--text);
+        font-size: 14px;
+        outline: none;
+        transition: border 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+      }
+
+      input:focus,
+      textarea:focus {
+        border-color: rgba(109, 224, 255, 0.6);
+        box-shadow: 0 0 0 3px rgba(109, 224, 255, 0.12);
+        background: rgba(255, 255, 255, 0.06);
+      }
+
+      textarea {
+        min-height: 100px;
+        resize: vertical;
+      }
+
+      .actions {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 4px;
+      }
+
+      button {
+        cursor: pointer;
+        border: none;
+        border-radius: 12px;
+        padding: 12px 18px;
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--bg);
+        background: linear-gradient(120deg, var(--accent), var(--accent-2));
+        box-shadow: 0 10px 25px rgba(109, 224, 255, 0.25);
+        transition: transform 0.12s ease, box-shadow 0.12s ease;
+      }
+
+      button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 14px 30px rgba(124, 124, 255, 0.28);
+      }
+
+      button:active {
+        transform: translateY(0);
+      }
+
+      .status {
+        min-height: 20px;
+        margin: 8px 0 0;
+        font-weight: 700;
+      }
+
+      .status.error {
+        color: var(--danger);
+      }
+
+      h2 {
+        margin: 0 0 10px;
+        font-size: 18px;
+        letter-spacing: 0.01em;
+      }
+
+      pre {
+        background: #0b0f16;
+        color: #b5c7ff;
+        padding: 14px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        min-height: 140px;
+        overflow: auto;
+        font-size: 13px;
+        line-height: 1.6;
+      }
+
+      code {
+        color: var(--accent);
+        font-weight: 700;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header class="hero">
+        <p class="eyebrow">Internal tool</p>
+        <h1>/appointments POST test</h1>
+        <p class="lede">
+          With the Flask server running, submit this form to send JSON to <code>/appointments</code>. Provide the service/test token you configured on the server so the request authenticates.
+        </p>
+      </header>
+
+      <div class="panel">
+        <form id="appt-form">
+          <div class="section">
+            <div class="section-title">
+              <span class="chip">Auth</span>
+              <p class="hint">Tokens are stored locally so you do not have to retype.</p>
+            </div>
+            <div class="grid">
+              <label>Service Token (X-App-Service-Token)<input name="serviceToken" placeholder="from config APPOINTMENTS_SERVICE_TOKEN" /></label>
+              <label>Role<input name="role" value="admin" placeholder="admin | vendor | client" /></label>
+              <label>Test Token (X-App-Test-Token)<input name="testToken" placeholder="from config APPOINTMENTS_TEST_TOKEN" /></label>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">
+              <span class="chip">Order</span>
+              <p class="hint">Fill the appointment payload exactly as the API expects.</p>
+            </div>
+            <div class="grid">
+              <label>Order ID<input name="orderId" value="WO-HTML" required /></label>
+              <label>Service<input name="service" value="General" required /></label>
+              <label>Property<input name="property" value="1 Test Way" required /></label>
+              <label>Notes<textarea name="notes">Collected via static HTML page.</textarea></label>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">
+              <span class="chip">People</span>
+              <p class="hint">Tenant, client, and vendor details.</p>
+            </div>
+            <div class="grid">
+              <label>Tenant Name<input name="tenantName" value="HTML Tester" required /></label>
+              <label>Tenant Email<input type="email" name="tenantEmail" value="tenant@example.com" required /></label>
+              <label>Tenant Phone<input type="tel" name="tenantPhone" value="(555) 111-2222" required /></label>
+              <label>Client Name (optional)<input name="clientName" placeholder="Property manager name" /></label>
+              <label>Client Email<input type="email" name="clientEmail" value="client@example.com" required /></label>
+              <label>Vendor Name<input name="vendorName" value="Preferred Vendor" required /></label>
+              <label>Vendor Email<input type="email" name="vendorEmail" value="vendor@example.com" required /></label>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button type="submit">Send appointment</button>
+          </div>
+        </form>
+        <p id="status" class="status error" role="alert"></p>
+      </div>
+
+      <div class="panel">
+        <h2>Server response</h2>
+        <pre id="response">Waiting for submission...</pre>
+      </div>
+    </div>
+
+    <script>
+      const endpoint = 'http://127.0.0.1:5000/appointments';
+      const form = document.getElementById('appt-form');
+      const statusEl = document.getElementById('status');
+      const responseEl = document.getElementById('response');
+      const STORAGE_KEYS = {
+        serviceToken: 'apptTest_serviceToken',
+        testToken: 'apptTest_testToken',
+        role: 'apptTest_role'
+      };
+
+      // Prefill auth fields from localStorage (so you don't retype tokens)
+      window.addEventListener('DOMContentLoaded', () => {
+        ['serviceToken', 'testToken', 'role'].forEach((key) => {
+          const el = form.elements[key];
+          if (el && localStorage.getItem(STORAGE_KEYS[key])) {
+            el.value = localStorage.getItem(STORAGE_KEYS[key]);
+          }
+        });
+      });
+
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        statusEl.textContent = '';
+        responseEl.textContent = 'Sending...';
+        const payload = Object.fromEntries(new FormData(form).entries());
+        if (!payload.clientName && payload.tenantName) payload.clientName = payload.tenantName;
+        if (!payload.phone && payload.tenantPhone) payload.phone = payload.tenantPhone;
+        if (payload.tenantEmail && payload.clientEmail && payload.tenantEmail.toLowerCase() === payload.clientEmail.toLowerCase()) {
+          statusEl.textContent = 'Tenant and client emails must be different.';
+          responseEl.textContent = '';
+          return;
+        }
+        try {
+          const headers = { 'Content-Type': 'application/json' };
+          const serviceToken = (payload.serviceToken || '').trim();
+          const role = (payload.role || '').trim();
+          const testToken = (payload.testToken || '').trim();
+          if (serviceToken) headers['X-App-Service-Token'] = serviceToken;
+          if (role) headers['X-App-Role'] = role;
+          if (testToken) headers['X-App-Test-Token'] = testToken;
+
+          // Persist auth fields for next run
+          if (serviceToken) localStorage.setItem(STORAGE_KEYS.serviceToken, serviceToken);
+          if (role) localStorage.setItem(STORAGE_KEYS.role, role);
+          if (testToken) localStorage.setItem(STORAGE_KEYS.testToken, testToken);
+
+          const res = await fetch(endpoint, {
+            method: 'POST',
+            headers,
+            credentials: 'include',
+            body: JSON.stringify({
+              ...payload,
+              role,
+              serviceToken,
+              testToken
+            })
+          });
+          const text = await res.text();
+          if (!res.ok) {
+            statusEl.textContent = 'Request failed (HTTP ' + res.status + ')';
+          } else {
+            statusEl.textContent = '';
+          }
+          responseEl.textContent = text;
+        } catch (error) {
+          statusEl.textContent = 'Network error: ' + error.message;
+          responseEl.textContent = '';
+        }
+      });
+    </script>
+  </body>
+</html>
